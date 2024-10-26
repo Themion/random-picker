@@ -8,7 +8,7 @@ type Store = {
   remove: (id: string) => void;
 };
 
-const getEmptyItem = (): Item => ({ value: '', weight: 0 });
+const getEmptyItem = (): Item => ({ text: '', progress: 0 });
 
 const itemStore = create<Store>((set) => ({
   items: new Map(),

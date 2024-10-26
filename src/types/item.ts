@@ -1,6 +1,6 @@
 type Item = {
-  value: string;
-  weight: number;
+  text: string;
+  progress: number;
 };
 
 type ItemMap = Map<string, Item>;
