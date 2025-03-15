@@ -1,34 +1,34 @@
 import { useFieldArray, useForm } from 'react-hook-form';
 
-import { Button } from '~/components/ui';
-
 import ItemInput from './components/ItemInput';
-
-type FormType = {
-  items: { text: string }[];
-};
+import { Button } from './components/ui';
+import { FormType } from './types';
 
 const App = () => {
-  const { control, register, handleSubmit } = useForm<FormType>();
-  const { fields, append } = useFieldArray({ control, name: 'items' });
+  const form = useForm<FormType>();
+  const { control, register } = form;
+  const { fields, append, remove } = useFieldArray({ control, name: 'test' });
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
+  const handleSubmit = form.handleSubmit((data) => {
+    const random = Math.floor(Math.random() * data.test.length);
+    console.log({ data, random, item: data.test[random].value });
   });
 
   return (
-    <>
-      <h1 className="text-3xl text-center font-bold underline">Hello World</h1>
-      <form onSubmit={onSubmit}>
-        <ul>
-          {fields.map((field, index) => (
-            <ItemInput key={field.id} {...register(`items.${index}.text`)} />
-          ))}
-        </ul>
-        <Button onClick={() => append({ text: '' })}>Click me</Button>
-        <Button type="submit">Click me</Button>
-      </form>
-    </>
+    <form onSubmit={handleSubmit}>
+      {fields.map((field, index) => (
+        <ItemInput
+          key={field.id}
+          index={index}
+          register={register}
+          remove={remove}
+        />
+      ))}
+      <Button type="button" onClick={() => append({ value: '' })}>
+        Click me
+      </Button>
+      <Button type="submit">getValues</Button>
+    </form>
   );
 };
 
