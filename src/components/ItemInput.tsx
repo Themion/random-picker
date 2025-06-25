@@ -1,6 +1,6 @@
 import { X } from 'lucide-react';
 import { ComponentProps } from 'react';
-import { useFieldArray, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 
 import { cn } from '~/lib/utils';
 import { FormType } from '~/types';
@@ -8,15 +8,16 @@ import { Button, Input } from './ui';
 
 type Props = Omit<ComponentProps<'input'>, 'type' | 'placeholder' | 'onChange'> & {
   index: number,
+  onRemoveItem: (index: number) => void
 };
 
-const ItemInput = ({ index, className, ...props }: Props) => {
-  const { control, register } = useFormContext<FormType>();
-  const { remove } = useFieldArray({ control: control, name: 'items' });
-
-  const handleCloseClick = () => {
-    remove(index);
-  }
+const ItemInput = ({ 
+  index, 
+  className, 
+  onRemoveItem,
+  ...props 
+}: Props) => {
+  const { register } = useFormContext<FormType>();
 
   return (
     <div className="flex w-full max-w-sm items-center space-x-2">
@@ -31,7 +32,7 @@ const ItemInput = ({ index, className, ...props }: Props) => {
         type="button"
         variant="ghost"
         size="icon"
-        onClick={handleCloseClick}
+        onClick={() => onRemoveItem(index)}
         className=" h-full px-3 py-2 hover:bg-transparent"
         aria-label="Clear input"
       >
