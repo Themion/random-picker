@@ -9,8 +9,9 @@ const App = () => {
   const form = useForm<FormType>();
   const { fields, append } = useFieldArray({ control: form.control, name: 'items' });
 
-  const handleSubmit = form.handleSubmit((data) => {
-    console.log(data);
+  const handleSubmit = form.handleSubmit(({items}) => {
+    const randomIndex = Math.floor(Math.random() * items.length);
+    console.log(items[randomIndex]!.text);
   });
 
   return (
