@@ -7,12 +7,16 @@ import ItemInput from './components/ItemInput';
 
 const App = () => {
   const form = useForm<FormType>();
-  const { fields, append } = useFieldArray({ control: form.control, name: 'items' });
+  const { fields, append, remove } = useFieldArray({ control: form.control, name: 'items' });
 
   const handleSubmit = form.handleSubmit(({items}) => {
     const randomIndex = Math.floor(Math.random() * items.length);
     console.log(items[randomIndex]!.text);
   });
+
+  const handleRemoveItem = (index: number): void => {
+    remove(index);
+  }
 
   return (
     <FormProvider {...form}>
@@ -20,7 +24,7 @@ const App = () => {
       <form onSubmit={handleSubmit}>
         <ul>
           {fields.map((field, index) => (
-            <ItemInput key={field.id} index={index} />
+            <ItemInput key={field.id} index={index} onRemoveItem={handleRemoveItem} />
           ))}
         </ul>
         <Button type="button" onClick={() => append({ text: '' })}>Append</Button>
